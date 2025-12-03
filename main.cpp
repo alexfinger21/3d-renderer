@@ -1,12 +1,13 @@
 #include <iostream>
-#include "Vector.hpp"
+#include <memory>
+#include "Vector3.hpp"
 
 int32_t main() {
     
-    Vector vec = {1,1,1};
-    vec.normalize();
+    std::unique_ptr<Vector3> vec(new Vector3{.x=0, .y=65, .z=0});
+    vec->normalize();
 
-    std::cout << vec << '\n';
+    std::cout << *vec << '\n';
     
     return 0;
 }
