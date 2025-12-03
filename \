@@ -1,17 +1,17 @@
+#include <iostream>
+
 #ifndef VECTOR3_HPP
 #define VECTOR3_HPP
 
-#include <iostream>
-
-class Object;
-
 struct Vector3 {
     friend class Object;
-
     double x{}, y{}, z{}; 
 
     double magnitude();
     void normalize();
+
+    private:
+        int sus() {return 1;};
 };
 
 std::ostream& operator<<(std::ostream& os, const Vector3& v);
