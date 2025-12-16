@@ -1,0 +1,3 @@
+/home/cdx9933/Documents/3d-renderer/build/CMakeFiles/MyApp.dir
+/home/cdx9933/Documents/3d-renderer/build/CMakeFiles/edit_cache.dir
+/home/cdx9933/Documents/3d-renderer/build/CMakeFiles/rebuild_cache.dir
