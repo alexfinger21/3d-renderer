@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create("com.alex.ar_render");
     app->signal_activate().connect([&app, &scr]() {
-        scr = std::make_unique<Screen>(200, 200);
+        scr = std::make_unique<Screen>(1000, 1000);
         app->add_window(*scr->window);
         scr->window->present();
     });
