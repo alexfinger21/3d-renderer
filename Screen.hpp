@@ -3,6 +3,7 @@
 
 #include <gtkmm.h>
 #include <memory>
+#include "RenderArea.hpp"
 
 class Screen {
 
@@ -10,6 +11,7 @@ class Screen {
         class RenderWindow : public Gtk::Window {
             public:
                 Screen* parent;
+                std::unique_ptr<RenderArea> m_render_area;
                 RenderWindow(Screen* parent);
         };
         int s_x, s_y;

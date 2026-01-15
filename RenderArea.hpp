@@ -1,5 +1,5 @@
-#ifndef RENDERAREA_h
-#define RENDERAREA_h
+#ifndef RENDER_AREA_HPP
+#define RENDER_AREA_HPP
 
 #include "cairomm/context.h"
 #include "cairomm/refptr.h"
@@ -8,7 +8,7 @@
 class RenderArea : public Gtk::DrawingArea {
     public:
         RenderArea();
-        virtual ~RenderArea();
+        virtual ~RenderArea() {};
     protected:
         void on_draw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height);
 };

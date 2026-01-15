@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include "RenderArea.hpp"
 #include "Screen.hpp"
 #include "Vector3.hpp"
 #include "Object.hpp"
@@ -15,7 +16,10 @@ int main(int argc, char* argv[]) {
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create("com.alex.ar_render");
     app->signal_activate().connect([&app, &scr]() {
         scr = std::make_unique<Screen>(1000, 1000);
+
+
         app->add_window(*scr->window);
+
         scr->window->present();
     });
     

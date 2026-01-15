@@ -11,6 +11,7 @@ add_executable(
     Vector3.cpp 
     Object.cpp
     Screen.cpp
+    RenderArea.cpp
 )
 
 # Link the libraries and includes
