@@ -7,6 +7,7 @@ Screen::RenderWindow::RenderWindow(Screen* parent): parent(parent) {
     set_default_size(parent->s_x, parent->s_y);
 
     this->m_render_area = std::make_unique<RenderArea>();
+    this->m_render_area->screen = this->parent;
     this->set_child(*this->m_render_area);
 }
 
