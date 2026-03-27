@@ -12,9 +12,10 @@ add_executable(
     Object.cpp
     Screen.cpp
     RenderArea.cpp
+    matrix/Mat4.cpp
 )
 
 # Link the libraries and includes
-target_include_directories(MyApp PRIVATE ${GTKMM_INCLUDE_DIRS})
+target_include_directories(MyApp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${GTKMM_INCLUDE_DIRS})
 target_link_libraries(MyApp PRIVATE ${GTKMM_LIBRARIES})
 target_compile_options(MyApp PRIVATE ${GTKMM_CFLAGS_OTHER})
