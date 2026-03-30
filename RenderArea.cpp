@@ -4,20 +4,21 @@
 #include "cairomm/refptr.h"
 #include <cmath>
 #include "Screen.hpp"
+#include "matrix/Mat4.hpp"
 
 
 const int pt_size = 8;
 const int edge_size = 12;
 
 Vector3 pts[pt_size] = {
-    Vector3{-1, 1, 3},
-    Vector3{1, 1, 3},
-    Vector3{1, -1, 3},
-    Vector3{-1, -1, 3},
-    Vector3{-1, 1, 5},
-    Vector3{1, 1, 5},
-    Vector3{1, -1, 5},
-    Vector3{-1, -1, 5},
+    Vector3{-1, -1, 1},
+    Vector3{1, -1, 1},
+    Vector3{1, -1, -1},
+    Vector3{-1, -1, -1},
+    Vector3{-1, 1, 1},
+    Vector3{1, 1, 1},
+    Vector3{1, 1, -1},
+    Vector3{-1, 1, -1},
 };
 
 std::pair<int, int> edges[edge_size] = {
@@ -55,26 +56,6 @@ bool RenderArea::update_animation() {
     return true;
 }
 
-double rotateX(Vector3& vec, Vector3& pivot, double angle) {
-    double c = cos(theta);
-    double s = sin(theta);
-
-    double d_x = (vec.x - pivot.x); 
-    double d_z = (vec.z - pivot.z); 
-
-    return pivot.x + (d_x*c - d_z*s); 
-}
-
-double rotateZ(Vector3& vec, Vector3& pivot, double angle) {
-    double c = cos(theta);
-    double s = sin(theta);
-
-    double d_x = (vec.x - pivot.x); 
-    double d_z = (vec.z - pivot.z); 
-
-    return pivot.z + (d_x*s + d_z*c); 
-}
-
 double rotation_speed = 0.5; 
 double last_t = 0.0;
 
@@ -84,6 +65,7 @@ bool RenderArea::on_tick(const Glib::RefPtr<Gdk::FrameClock>& frame_clock) {
     if (last_t > 0) {
         double dt = t - last_t;
         theta += rotation_speed * dt; 
+
         std::cout << "FPS: " << (1.0/dt) << std::endl;
     }
     
@@ -103,15 +85,27 @@ void RenderArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int
 
     Vector3 rot_pts[pt_size];
 
+    Mat4 rotMatrix = Mat4(Vector3{0, 4, 0});
+    rotMatrix.rotation(theta, 'z');
+
+    int z_flag = 0;
+
     for (int i = 0; i<pt_size; ++i) {
         Vector3 pt = pts[i];
         Vector3 next_pt = pts[(i+1)%pt_size];
 
-        double rotX = rotateX(pt, pivot, theta);
-        double rotZ = rotateZ(pt, pivot, theta);
+        rotMatrix.updateVector(pt); 
+        if (pts[i].y == 3 && pts[i].x == 1 && pts[i].z == 1) {
+            std::cout << pt << std::endl;
+        }
 
-        double x = (s_x/2 + (rotX)*scale/rotZ);
-        double y = (s_y/2 - pt.y*scale/rotZ);
+        if (pt.y < 0) {
+            ++z_flag;
+        }
+
+        double x = (s_x/2 + pt.x*scale/pt.y);
+        double y = (s_y/2 - pt.z*scale/pt.y);
+        
 
         rot_pts[i] = Vector3{x, y, 0};
 
@@ -119,13 +113,15 @@ void RenderArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int
         cr->fill();
     }
 
-    cr->set_line_width(radius*2);
-    for (int i = 0; i<edge_size; ++i) {
-        Vector3 vec0 = rot_pts[edges[i].first];
-        Vector3 vec1 = rot_pts[edges[i].second];
+    if (z_flag != 8) {
+        cr->set_line_width(radius*2);
+        for (int i = 0; i<edge_size; ++i) {
+            Vector3 vec0 = rot_pts[edges[i].first];
+            Vector3 vec1 = rot_pts[edges[i].second];
 
-        cr->move_to(vec0.x, vec0.y);
-        cr->line_to(vec1.x, vec1.y);
+            cr->move_to(vec0.x, vec0.y);
+            cr->line_to(vec1.x, vec1.y);
+        }
+        cr->stroke();
     }
-    cr->stroke();
 }

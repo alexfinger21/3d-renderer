@@ -1,8 +1,10 @@
 #include "Mat4.hpp"
 #include "Vector3.hpp"
 #include <cmath>
+#include <iostream>
 
-Mat4::Mat4(Vector3 v) {
+
+Mat4::Mat4(const Vector3& v) {
    for (int i = 0; i<4; ++i) {
        for (int j = 0; j<4; ++j) {
            this->m[i][j] = (i == j ? 1 : 0);
@@ -12,26 +14,10 @@ Mat4::Mat4(Vector3 v) {
    this->translation(v); 
 }
 
-void Mat4::translation(Vector3 v) {
+void Mat4::translation(const Vector3& v) {
     m[0][3] = v.x;
     m[1][3] = v.y;
     m[2][3] = v.z;
-}
-
-Mat4 Mat4::multiply(Mat4 matrix2) {
-    Mat4 result = Mat4(); 
-
-    for (int i = 0; i<4; ++i) {
-        for (int j = 0; j<4; ++j) {
-            result.m[i][j] = 
-                this->m[i][0] * matrix2.m[0][j] + 
-                this->m[i][1] * matrix2.m[1][j] + 
-                this->m[i][2] * matrix2.m[2][j] + 
-                this->m[i][3] * matrix2.m[3][j]; 
-        }
-    }
-
-    return result;
 }
 
 void Mat4::rotation(double angle, char dir) {
@@ -91,3 +77,54 @@ void Mat4::rotation(double angle, char dir) {
             break;
     }
 } 
+
+void Mat4::updateVector(Vector3& pos) {
+    Vector3 oldPos = pos;
+
+    pos.x =
+        this->m[0][0] * oldPos.x +
+        this->m[0][1] * oldPos.y +
+        this->m[0][2] * oldPos.z + 
+        this->m[0][3] * 1;
+
+    pos.y =
+        this->m[1][0] * oldPos.x +
+        this->m[1][1] * oldPos.y +
+        this->m[1][2] * oldPos.z + 
+        this->m[1][3] * 1;
+
+    pos.z =
+        this->m[2][0] * oldPos.x +
+        this->m[2][1] * oldPos.y +
+        this->m[2][2] * oldPos.z + 
+        this->m[2][3] * 1;
+}
+
+Mat4 Mat4::multiply(Mat4 matrix2) {
+    Mat4 result = Mat4(); 
+
+    for (int i = 0; i<4; ++i) {
+        for (int j = 0; j<4; ++j) {
+            result.m[i][j] = 
+                this->m[i][0] * matrix2.m[0][j] + 
+                this->m[i][1] * matrix2.m[1][j] + 
+                this->m[i][2] * matrix2.m[2][j] + 
+                this->m[i][3] * matrix2.m[3][j]; 
+        }
+    }
+
+    return result;
+}
+
+std::ostream& operator<<(std::ostream& os, const Mat4& m) {
+    for (int i = 0; i<4; ++i) {
+        for (int j = 0; j<4; ++j) {
+            os << m.m[i][j] << (j < 3 ? " | " : "");
+        }
+
+        os << '\n';
+    }
+
+    return os;
+}
+
