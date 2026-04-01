@@ -13,8 +13,7 @@ struct Mat4 {
     void rotation(double angle, char dir);
     void updateVector(Vector3& pos);
 
-    private:
-        Mat4 multiply(Mat4 m);
+    Mat4 multiply(Mat4 m);
 };
 
 std::ostream& operator<<(std::ostream& os, const Mat4& m);

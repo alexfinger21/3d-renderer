@@ -42,6 +42,8 @@ std::pair<int, int> edges[edge_size] = {
 Vector3 pivot = {0, 0, 4};
 
 double theta = 0.0;
+double alpha = 0.0;
+double beta = 0.0;
 
 RenderArea::RenderArea() {
     set_draw_func(sigc::mem_fun(*this, &RenderArea::on_draw));
@@ -64,7 +66,7 @@ bool RenderArea::on_tick(const Glib::RefPtr<Gdk::FrameClock>& frame_clock) {
     
     if (last_t > 0) {
         double dt = t - last_t;
-        theta += rotation_speed * dt; 
+        // theta += rotation_speed * dt; 
 
         std::cout << "FPS: " << (1.0/dt) << std::endl;
     }
@@ -85,8 +87,13 @@ void RenderArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int
 
     Vector3 rot_pts[pt_size];
 
-    Mat4 rotMatrix = Mat4(Vector3{0, 4, 0});
-    rotMatrix.rotation(theta, 'z');
+    Mat4 rotMatrix = Mat4(Vector3{0, 10, 0});
+    Mat4 rotMatrix2 = Mat4();
+    Mat4 rotMatrix3 = Mat4();
+    rotMatrix.rotation(theta, 'x');
+    rotMatrix2.rotation(alpha, 'y');
+    rotMatrix3.rotation(beta, 'z');
+    Mat4 newMatrix = rotMatrix.multiply(rotMatrix2).multiply(rotMatrix3);
 
     int z_flag = 0;
 
@@ -94,7 +101,7 @@ void RenderArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int
         Vector3 pt = pts[i];
         Vector3 next_pt = pts[(i+1)%pt_size];
 
-        rotMatrix.updateVector(pt); 
+        newMatrix.updateVector(pt); 
         if (pts[i].y == 3 && pts[i].x == 1 && pts[i].z == 1) {
             std::cout << pt << std::endl;
         }

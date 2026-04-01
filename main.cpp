@@ -10,7 +10,6 @@
 int main(int argc, char* argv[]) {
     
     std::unique_ptr<Vector3> vec(new Vector3{.x=0, .y=5, .z=0});
-    // vec->normalize();
     
     std::unique_ptr<Object> obj = std::make_unique<Object>(); 
     std::unique_ptr<Screen> scr;

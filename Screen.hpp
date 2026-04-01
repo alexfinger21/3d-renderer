@@ -4,6 +4,14 @@
 #include <gtkmm.h>
 #include <memory>
 #include "RenderArea.hpp"
+#include "glibmm/refptr.h"
+#include "gdk/gdkkeysyms.h"
+#include <gtkmm.h>
+#include <iostream>
+
+extern double theta;
+extern double alpha;
+extern double beta;
 
 class Screen {
 
@@ -11,10 +19,16 @@ class Screen {
         class RenderWindow : public Gtk::Window {
             public:
                 Screen* parent;
+
                 std::unique_ptr<RenderArea> m_render_area;
+
+                bool on_press(guint keyval, guint, Gdk::ModifierType state);
+
                 RenderWindow(Screen* parent);
         };
+
         int s_x, s_y;
+
         std::unique_ptr<RenderWindow> window;
 
         Screen(int size_x, int size_y): 
