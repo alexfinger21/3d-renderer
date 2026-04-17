@@ -1,4 +1,5 @@
 #include "Screen.hpp"
+#include "matrix/Mat4.hpp"
 
 Screen::RenderWindow::RenderWindow(Screen* parent): parent(parent) {
     set_title("AR Render");
@@ -28,40 +29,87 @@ bool Screen::RenderWindow::on_press(guint keyval, guint, Gdk::ModifierType state
     std::cout << GDK_KEY_h << std::endl;
 
     if (keyval == GDK_KEY_J) {
-        theta += 0.11;
+        theta = 0.11;
+
+        Mat4 change = Mat4();
+        change.rotation(theta, 'x');
+
+        rotMatrix = rotMatrix.multiply(change);
 
         return true;
     }
 
     if (keyval == GDK_KEY_j) {
-        theta -= 0.11;
+        theta = -0.11;
+
+        Mat4 change = Mat4();
+        change.rotation(theta, 'x');
+
+        rotMatrix = rotMatrix.multiply(change);
 
         return true;
     }
 
     if (keyval == GDK_KEY_K) {
-        alpha += 0.11;
+        alpha = 0.11;
+
+        Mat4 change = Mat4();
+        change.rotation(alpha, 'y');
+
+        rotMatrix = rotMatrix.multiply(change);
 
         return true;
     }
 
     if (keyval == GDK_KEY_k) {
-        alpha -= 0.11;
+        alpha = -0.11;
+
+        Mat4 change = Mat4();
+        change.rotation(alpha, 'y');
+
+        rotMatrix = rotMatrix.multiply(change);
 
         return true;
     }
 
     if (keyval == GDK_KEY_L) {
-        beta += 0.11;
+        beta = 0.11;
+
+        Mat4 change = Mat4();
+        change.rotation(beta, 'z');
+
+        rotMatrix = rotMatrix.multiply(change);
 
         return true;
     }
 
     if (keyval == GDK_KEY_l) {
-        beta -= 0.11;
+        beta = -0.11;
+
+        Mat4 change = Mat4();
+        change.rotation(beta, 'z');
+
+        rotMatrix = rotMatrix.multiply(change);
 
         return true;
     }
+
+    if (keyval == GDK_KEY_z) {
+        screen_z -= 0.11;
+
+        rotMatrix.translation(Vector3{0, 10 - screen_z, 0});
+
+        return true;
+    }
+
+    if (keyval == GDK_KEY_Z) {
+        screen_z += 0.11;
+
+        rotMatrix.translation(Vector3{0, 10 - screen_z, 0});
+
+        return true;
+    }
+
 
     return false;
 }

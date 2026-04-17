@@ -44,6 +44,7 @@ Vector3 pivot = {0, 0, 4};
 double theta = 0.0;
 double alpha = 0.0;
 double beta = 0.0;
+double screen_z = 0.0;
 
 RenderArea::RenderArea() {
     set_draw_func(sigc::mem_fun(*this, &RenderArea::on_draw));
@@ -76,6 +77,8 @@ bool RenderArea::on_tick(const Glib::RefPtr<Gdk::FrameClock>& frame_clock) {
     return true;
 }
 
+Mat4 rotMatrix = Mat4(Vector3{0, 10 - screen_z, 0});;
+
 void RenderArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int height) {
     double s_x = this->screen->s_x * 1.0;
     double s_y = this->screen->s_y * 1.0;
@@ -87,21 +90,13 @@ void RenderArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr, int width, int
 
     Vector3 rot_pts[pt_size];
 
-    Mat4 rotMatrix = Mat4(Vector3{0, 10, 0});
-    Mat4 rotMatrix2 = Mat4();
-    Mat4 rotMatrix3 = Mat4();
-    rotMatrix.rotation(theta, 'x');
-    rotMatrix2.rotation(alpha, 'y');
-    rotMatrix3.rotation(beta, 'z');
-    Mat4 newMatrix = rotMatrix.multiply(rotMatrix2).multiply(rotMatrix3);
-
     int z_flag = 0;
 
     for (int i = 0; i<pt_size; ++i) {
         Vector3 pt = pts[i];
         Vector3 next_pt = pts[(i+1)%pt_size];
 
-        newMatrix.updateVector(pt); 
+        rotMatrix.updateVector(pt); 
         if (pts[i].y == 3 && pts[i].x == 1 && pts[i].z == 1) {
             std::cout << pt << std::endl;
         }

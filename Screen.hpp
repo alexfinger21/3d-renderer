@@ -6,12 +6,15 @@
 #include "RenderArea.hpp"
 #include "glibmm/refptr.h"
 #include "gdk/gdkkeysyms.h"
+#include "matrix/Mat4.hpp"
 #include <gtkmm.h>
 #include <iostream>
 
 extern double theta;
 extern double alpha;
 extern double beta;
+extern double screen_z;
+extern Mat4 rotMatrix;
 
 class Screen {
 
