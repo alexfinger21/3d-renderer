@@ -28,13 +28,14 @@ bool Screen::RenderWindow::on_press(guint keyval, guint, Gdk::ModifierType state
     std::cout << keyval << std::endl;
     std::cout << GDK_KEY_h << std::endl;
 
+    Mat4 changeRotMatrix = Mat4();
+
     if (keyval == GDK_KEY_J) {
         theta = 0.11;
 
-        Mat4 change = Mat4();
-        change.rotation(theta, 'x');
+        changeRotMatrix.rotation(theta, 'x');
 
-        rotMatrix = rotMatrix.multiply(change);
+        rotMatrix = rotMatrix.multiply(changeRotMatrix);
 
         return true;
     }
@@ -42,10 +43,9 @@ bool Screen::RenderWindow::on_press(guint keyval, guint, Gdk::ModifierType state
     if (keyval == GDK_KEY_j) {
         theta = -0.11;
 
-        Mat4 change = Mat4();
-        change.rotation(theta, 'x');
+        changeRotMatrix.rotation(theta, 'x');
 
-        rotMatrix = rotMatrix.multiply(change);
+        rotMatrix = rotMatrix.multiply(changeRotMatrix);
 
         return true;
     }
@@ -53,10 +53,9 @@ bool Screen::RenderWindow::on_press(guint keyval, guint, Gdk::ModifierType state
     if (keyval == GDK_KEY_K) {
         alpha = 0.11;
 
-        Mat4 change = Mat4();
-        change.rotation(alpha, 'y');
+        changeRotMatrix.rotation(alpha, 'y');
 
-        rotMatrix = rotMatrix.multiply(change);
+        rotMatrix = rotMatrix.multiply(changeRotMatrix);
 
         return true;
     }
@@ -64,10 +63,9 @@ bool Screen::RenderWindow::on_press(guint keyval, guint, Gdk::ModifierType state
     if (keyval == GDK_KEY_k) {
         alpha = -0.11;
 
-        Mat4 change = Mat4();
-        change.rotation(alpha, 'y');
+        changeRotMatrix.rotation(alpha, 'y');
 
-        rotMatrix = rotMatrix.multiply(change);
+        rotMatrix = rotMatrix.multiply(changeRotMatrix);
 
         return true;
     }
@@ -75,10 +73,9 @@ bool Screen::RenderWindow::on_press(guint keyval, guint, Gdk::ModifierType state
     if (keyval == GDK_KEY_L) {
         beta = 0.11;
 
-        Mat4 change = Mat4();
-        change.rotation(beta, 'z');
+        changeRotMatrix.rotation(beta, 'z');
 
-        rotMatrix = rotMatrix.multiply(change);
+        rotMatrix = rotMatrix.multiply(changeRotMatrix);
 
         return true;
     }
@@ -86,10 +83,9 @@ bool Screen::RenderWindow::on_press(guint keyval, guint, Gdk::ModifierType state
     if (keyval == GDK_KEY_l) {
         beta = -0.11;
 
-        Mat4 change = Mat4();
-        change.rotation(beta, 'z');
+        changeRotMatrix.rotation(beta, 'z');
 
-        rotMatrix = rotMatrix.multiply(change);
+        rotMatrix = rotMatrix.multiply(changeRotMatrix);
 
         return true;
     }
