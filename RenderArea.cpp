@@ -64,6 +64,8 @@ double last_t = 0.0;
 
 bool RenderArea::on_tick(const Glib::RefPtr<Gdk::FrameClock>& frame_clock) {
     double t = frame_clock->get_frame_time() / 1000000.0; 
+
+    // add rasterization
     
     if (last_t > 0) {
         double dt = t - last_t;
